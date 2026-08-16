@@ -1,0 +1,183 @@
+[
+    {
+        "text": "Please Refresh for Rural Master Sync in Cache Memory. REASON: Update in branch campaign Master & Field Allocation Master bfl_std_lake.rtl_cc.rpl_rapidlr_branch_campaign_master",
+        "steps": [
+            "refresh_master_table('bfl_std_lake.rtl_cc.rpl_rapidlr_branch_campaign_master')",
+            "send_email_notification to stakeholders confirming refresh completion"
+        ],
+        "metadata": {
+            "ticket_type": "workflow_jobs"
+        }
+    },
+    {
+        "text": "Please update the below mentioned Table master - BFL_STD_LAKE.PL_COE_MART.LEAD_ID_MASTER_SPL. This update is required because some sources data was excluding because of source and internal source was not updated.",
+        "steps": [
+            "update_master_table('BFL_STD_LAKE.PL_COE_MART.LEAD_ID_MASTER_SPL', 'Update source and internal source mappings')",
+            "refresh_master_table('BFL_STD_LAKE.PL_COE_MART.LEAD_ID_MASTER_SPL')",
+            "send_email_notification to confirm update"
+        ],
+        "metadata": {
+            "ticket_type": "workflow_jobs"
+        }
+    },
+    {
+        "text": "Please sync the below tables bfl_std_lake.insurance_distribution.pincode_health_master and bfl_std_lake.insurance_distribution.pb_campaign_master_rlr in RapidLR. Please refresh it after it refreshes at ICORS. Note: I have already raised the ticket for ICORS refresh (6743210)",
+        "steps": [
+            "refresh_master_table('bfl_std_lake.insurance_distribution.pincode_health_master')",
+            "refresh_master_table('bfl_std_lake.insurance_distribution.pb_campaign_master_rlr')",
+            "send_email_notification confirming sync after ICORS refresh"
+        ],
+        "metadata": {
+            "ticket_type": "workflow_jobs"
+        }
+    },
+    {
+        "text": "Please replace the Old default campaign by these new campaigns. Changes are only for PLPPL. Old Campaign: BFL_RAPIDLR_PL_EMERGING_HINDI_BARE, New Campaign: BFL_RLR_PLP_EME_AI_BOT_HIN_Pune. Old Campaign: BFL_RAPIDLR_PLCSG_P2_HINDI_BARE, New Campaign: BFL_RLR_PLP_GR_AI_BOT_HIN_Pune",
+        "steps": [
+            "check_control_flags on campaign master to verify current mapping",
+            "update_master_table to replace old campaigns with new campaigns",
+            "refresh_master_table to sync campaign master",
+            "send_email_notification to confirm changes"
+        ],
+        "metadata": {
+            "ticket_type": "workflow_jobs"
+        }
+    },
+    {
+        "text": "The PLPPL workflow pipeline is failing intermittently. The RapidLR PL pipeline for PLPPL offerProduct is throwing errors during the Business Rule Engine evaluation step. Need to investigate the EDS-RapidLR-PL repository code path and validate the master table configurations for plCtaControlMaster.",
+        "steps": [
+            "run_pipeline_check('EDS-RapidLR-PL') to check pipeline health",
+            "check_control_flags('plCtaControlMaster', 'sendToSfdc, sfdcFlag')",
+            "update_master_table to fix flag misconfiguration if found",
+            "refresh_master_table to apply fixes",
+            "run_pipeline_check again to verify pipeline health",
+            "update_devops_ticket with RCA"
+        ],
+        "metadata": {
+            "ticket_type": "workflow_jobs"
+        }
+    },
+    {
+        "text": "Since yesterday, no missed call feeds are flowing into Rapid LR. Source Name: bflslmscl2",
+        "steps": [
+            "run_pipeline_check on ingestion pipeline",
+            "check_control_flags on source routing configuration",
+            "update_devops_ticket with findings",
+            "send_email_notification to alert source system team"
+        ],
+        "metadata": {
+            "ticket_type": "workflow_jobs"
+        }
+    },
+    {
+        "text": "As we checked the super app and web feeds are not flowing from 19th July. Kindly check.",
+        "steps": [
+            "run_pipeline_check on ingestion pipeline for these sources",
+            "check_control_flags on source routing configuration",
+            "update_devops_ticket with detailed analysis",
+            "send_email_notification to escalate"
+        ],
+        "metadata": {
+            "ticket_type": "workflow_jobs"
+        }
+    },
+    {
+        "text": "Please check the below sample logs ID, the data are not pushing on prospect staging of Growth SE business despite all masters have been updated. logId: 09508632-bbb4-45d8-8651-fbe8b044494e, a4150cd0-d148-4fef-96f0-1274b8635ca6, 1d776a1c-95c9-4ab3-9830-2b5f780a06d9",
+        "steps": [
+            "query_log_view with the provided log IDs",
+            "Records show status=EXCLUDED",
+            "analyze_exclusion_reason for the excluded log IDs",
+            "update_devops_ticket with RCA findings"
+        ],
+        "metadata": {
+            "ticket_type": "log_lookup",
+            "log_status": "excluded"
+        }
+    },
+    {
+        "text": "Please check the attached file all feeds are excluding as Default campaign not set, despite all the branches are available in Branch Master of SALPL.",
+        "steps": [
+            "query_log_view to check excluded feeds with statusReason 'Default campaign not set'",
+            "analyze_exclusion_reason for the excluded records",
+            "update_devops_ticket with resolution"
+        ],
+        "metadata": {
+            "ticket_type": "log_lookup",
+            "log_status": "excluded"
+        }
+    },
+    {
+        "text": "Please check why feeds are not routing in the campaign BFL_RAPIDLR_PL_T1_TB_EHM_PUNE for T1 business where Process segmentation is PLTB and response business = T1.",
+        "steps": [
+            "query_log_view to check recent feeds for T1 business with PLTB segmentation",
+            "analyze_exclusion_reason for records not routing correctly",
+            "update_devops_ticket with findings"
+        ],
+        "metadata": {
+            "ticket_type": "log_lookup",
+            "log_status": "excluded"
+        }
+    },
+    {
+        "text": "As we checked the data many of the shortcode's response business is not being stamped. Kindly check and validate why this is happening.",
+        "steps": [
+            "query_log_view to check records where responseBusiness is blank",
+            "analyze_exclusion_reason for records with missing responseBusiness",
+            "update_devops_ticket with findings"
+        ],
+        "metadata": {
+            "ticket_type": "log_lookup",
+            "log_status": "excluded"
+        }
+    },
+    {
+        "text": "All the NTB feeds are excluding as reason stamping as Offer not available. Kindly check because in NTB case offer will not be available.",
+        "steps": [
+            "query_log_view to check NTB feeds with statusReason 'Offer not available'",
+            "analyze_exclusion_reason for NTB excluded records",
+            "update_devops_ticket with resolution"
+        ],
+        "metadata": {
+            "ticket_type": "log_lookup",
+            "log_status": "excluded"
+        }
+    },
+    {
+        "text": "Validate DNC data that is being sent in Rapid LR for Calling. Should have been excluded from calling base. Need to check whether DNC is not being applied on this.",
+        "steps": [
+            "query_log_view to check DNC flagged records that were not excluded",
+            "analyze_exclusion_reason to find why DNC filter is not applied",
+            "update_devops_ticket with findings"
+        ],
+        "metadata": {
+            "ticket_type": "log_lookup",
+            "log_status": "excluded"
+        }
+    },
+    {
+        "text": "Data is eligible in the log table but not reaching SFDC CRM for the below logIds. logId: 3f2a7b91-1234-4abc-9def-567890abcdef, 8c4e1d32-5678-4fed-ba98-765432109876. Please check why eligible data is not flowing to downstream.",
+        "steps": [
+            "query_log_view with the provided log IDs",
+            "Records show status=Eligible but data not in downstream",
+            "check_downstream_integration('SFDC CRM') to verify connectivity and data flow",
+            "update_devops_ticket with findings"
+        ],
+        "metadata": {
+            "ticket_type": "log_lookup",
+            "log_status": "eligible"
+        }
+    },
+    {
+        "text": "We have provided log IDs for leads submitted yesterday but there is no data at all in the log table. logId: aab12cd3-9876-4ef0-abcd-1234567890ab. Please investigate why data is missing.",
+        "steps": [
+            "query_log_view with the provided log IDs",
+            "No records found in log table",
+            "check_upstream_source to verify if data was received from source system",
+            "update_devops_ticket with findings"
+        ],
+        "metadata": {
+            "ticket_type": "log_lookup",
+            "log_status": "no_data"
+        }
+    }
+]
